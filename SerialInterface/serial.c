@@ -8,22 +8,24 @@
 #include <time.h>
 #include <sys/wait.h>
 
-#define START 0
-#define BAUD 1
-#define CONTROL 2
-#define SAFE 3
-#define FULL 4
-#define POWER 5
-#define SPOT 5
-#define CLEAN 6
-#define MAX 7
-#define DRIVE 8
-#define MOTORS 9
-#define LEDS 10
-#define SONG 11
-#define PLAY 12
-#define SENSORS 13
-#define DOCK 14  // DOCKへ戻す
+typedef enum {
+    START,
+    BAUD,
+    CONTROL,
+    SAFE,
+    FULL,
+    POWER,
+    SPOT,
+    CLEAN,
+    MAX,
+    DRIVE,
+    MOTORS,
+    LEDS,
+    SONG,
+    PLAY,
+    SENSORS,
+    DOCK  // DOCKへ戻す
+} Command;
 
 #define SERIAL_PORT "/dev/ttyUSB0"
 #define BAUD_RATE 115200
