@@ -10,6 +10,6 @@ kcapture
 - 定義
 
 <pre>
-func Start(cmd string , args []string) bool
-func Stop(proc string) bool
+func Start(cmd string, args []string) (isSuccessed bool, err error) 
+func Stop(proc string) (isSuccessed bool, err error) 
 </pre>

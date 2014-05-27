@@ -9,25 +9,24 @@ import (
 )
 
 /*  run a command */
-func run(command string, args []string) bool {
+func run(command string, args []string) (isSuccessed bool, err error) {
 	exec.LookPath(command)
 
 	cmd := exec.Command(command)
 	cmd.Env = os.Environ()
 	cmd.Args = args
 	cmd.Dir = "."
-	stdout, _err := cmd.StdoutPipe()
+	stdout, err := cmd.StdoutPipe()
 
-	if err := cmd.Start(); err != nil {
+	if err = cmd.Start(); err != nil {
 		log.Fatal(err)
 	}
 
-	if _err != nil {
-		log.Println(_err)
+	if err != nil {
+		return false, err
 	}
 
 	var n int
-	var err error
 	buf := make([]byte, 2048)
 
 	for {
@@ -37,11 +36,11 @@ func run(command string, args []string) bool {
 		log.Print(string(buf[0:n]))
 	}
 
-	return true
+	return true, nil
 }
 
 /* start */
-func Start(cmd string, args []string) bool {
+func Start(cmd string, args []string) (isSuccessed bool, err error) {
 	_args := []string{}
 
 	if cmd == "ffmpeg" {
@@ -56,7 +55,7 @@ func Start(cmd string, args []string) bool {
 	} else if cmd == "ffserver" {
 		if args == nil {
 			/* ex) $ ffserver -d -f /etc/ffserver.conf & */
-			_args = []string{cmd, "-d", "-f", "/etc/ffserver.conf", "&"}
+			_args = []string{cmd, "-d", "-f", "/etc/ffserver.conf &"}
 		} else {
 			tmp := strings.Join(args, " ")
 			_args := strings.Split(cmd+tmp, " ")
@@ -64,25 +63,38 @@ func Start(cmd string, args []string) bool {
 		}
 	} else {
 		fmt.Println("Not support command.")
-		return false
+		return false, err
 	}
 
-	isSuccessed := run(cmd, _args)
+	isSuccessed, err = run(cmd, _args)
+	if err != nil {
+		log.Println(err)
+		return isSuccessed, err
+	}
 
-	fmt.Println("Starting videoCapture")
+	if cmd == "ffmpeg" {
+		fmt.Println("Starting ffmpeg")
+	} else if cmd == "ffserver" {
+		fmt.Println("Starting ffserver")
 
-	return isSuccessed
+	}
+
+	return isSuccessed, nil
 }
 
 /* stop */
-func Stop(proc string) bool {
+func Stop(proc string) (isSuccessed bool, err error) {
 	// use pkill
 	cmd := "pkill"
 	_args := []string{cmd, "-f", proc}
 
-	isSuccessed := run(cmd, _args)
+	isSuccessed, err = run(cmd, _args)
+	if err != nil {
+		log.Println(err)
+		return isSuccessed, err
+	}
 
 	fmt.Println("Stopping videoCapture")
 
-	return isSuccessed
+	return isSuccessed, nil
 }
