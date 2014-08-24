@@ -9,7 +9,7 @@ import (
 )
 
 /*  run a command */
-func run(command string, args []string) (isSuccessed bool, err error) {
+func run(command string, args []string) (err error) {
 	exec.LookPath(command)
 
 	cmd := exec.Command(command)
@@ -23,7 +23,7 @@ func run(command string, args []string) (isSuccessed bool, err error) {
 	}
 
 	if err != nil {
-		return false, err
+		return err
 	}
 
 	var n int
@@ -36,11 +36,11 @@ func run(command string, args []string) (isSuccessed bool, err error) {
 		log.Print(string(buf[0:n]))
 	}
 
-	return true, nil
+	return nil
 }
 
 /* start */
-func Start(cmd string, args []string) (isSuccessed bool, err error) {
+func Start(cmd string, args []string) (err error) {
 	_args := []string{}
 
 	if cmd == "ffmpeg" {
@@ -63,38 +63,28 @@ func Start(cmd string, args []string) (isSuccessed bool, err error) {
 		}
 	} else {
 		fmt.Println("Not support command.")
-		return false, err
+		return err
 	}
 
-	isSuccessed, err = run(cmd, _args)
+	err = run(cmd, _args)
 	if err != nil {
-		log.Println(err)
-		return isSuccessed, err
+		return err
 	}
 
-	if cmd == "ffmpeg" {
-		fmt.Println("Starting ffmpeg")
-	} else if cmd == "ffserver" {
-		fmt.Println("Starting ffserver")
-
-	}
-
-	return isSuccessed, nil
+	return nil
 }
 
 /* stop */
-func Stop(proc string) (isSuccessed bool, err error) {
+func Stop(proc string) (err error) {
 	// use pkill
 	cmd := "pkill"
 	_args := []string{cmd, "-f", proc}
 
-	isSuccessed, err = run(cmd, _args)
+	err = run(cmd, _args)
 	if err != nil {
 		log.Println(err)
-		return isSuccessed, err
+		return err
 	}
 
-	fmt.Println("Stopping videoCapture")
-
-	return isSuccessed, nil
+	return nil
 }

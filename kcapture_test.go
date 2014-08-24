@@ -8,31 +8,31 @@ import (
 func TestStart(t *testing.T) {
 	/* expected TRUE test */
 	actual := kcapture.Start("ffmpeg", nil)
-	expected := true
+	var expected error = nil
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
 	}
 
 	/* expected TRUE test */
-	actual2 := kcapture.Start("ffserver", nil)
-	expected2 := true
-	if actual2 != expected {
-		t.Errorf("got %v\nwant %v", actual2, expected2)
+	actual = kcapture.Start("ffserver", nil)
+	expected = nil
+	if actual != expected {
+		t.Errorf("got %v\nwant %v", actual, expected)
 	}
 }
 
 func TestStop(t *testing.T) {
 	/* expected TRUE test */
 	actual := kcapture.Stop("ffmpeg")
-	expected := true
+	var expected error = nil
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
 	}
 
 	/* expected TRUE test */
-	actual2 := kcapture.Stop("ffserver")
-	expected2 := true
-	if actual2 != expected {
-		t.Errorf("got %v\nwant %v", actual2, expected2)
+	actual = kcapture.Stop("ffserver")
+	expected = nil
+	if actual != expected {
+		t.Errorf("got %v\nwant %v", actual, expected)
 	}
 }
