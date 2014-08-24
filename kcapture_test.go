@@ -1,20 +1,19 @@
 package kcapture
 
 import (
-	"./kcapture"
 	"testing"
 )
 
 func TestStart(t *testing.T) {
 	/* expected TRUE test */
-	actual := kcapture.Start("ffmpeg", nil)
+	actual := StartStreamer(nil)
 	var expected error = nil
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
 	}
 
 	/* expected TRUE test */
-	actual = kcapture.Start("ffserver", nil)
+	actual = StartServer(nil)
 	expected = nil
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
@@ -23,14 +22,14 @@ func TestStart(t *testing.T) {
 
 func TestStop(t *testing.T) {
 	/* expected TRUE test */
-	actual := kcapture.Stop("ffmpeg")
+	actual := StopStreamer()
 	var expected error = nil
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)
 	}
 
 	/* expected TRUE test */
-	actual = kcapture.Stop("ffserver")
+	actual = StopServer()
 	expected = nil
 	if actual != expected {
 		t.Errorf("got %v\nwant %v", actual, expected)

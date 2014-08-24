@@ -1,23 +1,21 @@
 package main
 
 import (
-	"./kcapture"
 	"fmt"
 	"time"
+
+	"github.com/karota-project/kcapture"
 )
 
 func main() {
-	err := kcapture.Start("ffmpeg", nil)
-	if err != nil {
+	if err := kcapture.StartStreamer(nil); err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	time.Sleep(5 * time.Second)
 
-	err = kcapture.Start("ffserver", nil)
-
-	if err != nil {
+	if err := kcapture.StartServer(nil); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -26,14 +24,12 @@ func main() {
 
 	time.Sleep(60 * time.Second)
 
-	err = kcapture.Stop("ffmpeg")
-	if err != nil {
+	if err := kcapture.StopStreamer(); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	err = kcapture.Stop("ffserver")
-	if err != nil {
+	if err := kcapture.StopServer(); err != nil {
 		fmt.Println(err)
 		return
 	}
